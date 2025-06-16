@@ -1,23 +1,19 @@
 import { FC, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
+import { 
+  selectOrderModalData as selectOrderData,
+  selectIngredients 
+} from '../../services/slices/mainSlice';
+import { useParams } from 'react-router-dom';
 
 export const OrderInfo: FC = () => {
-  /** TODO: взять переменные orderData и ingredients из стора */
-  const orderData = {
-    createdAt: '',
-    ingredients: [],
-    _id: '',
-    status: '',
-    name: '',
-    updatedAt: 'string',
-    number: 0
-  };
+  const orderData = useSelector(selectOrderData);
+  const ingredients = useSelector(selectIngredients);
+  const { id } = useParams();
 
-  const ingredients: TIngredient[] = [];
-
-  /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;
 
@@ -40,7 +36,6 @@ export const OrderInfo: FC = () => {
         } else {
           acc[item].count++;
         }
-
         return acc;
       },
       {}
