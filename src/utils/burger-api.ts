@@ -73,8 +73,12 @@ type TOrdersResponse = TServerResponse<{
 
 export const getIngredientsApi = () =>
   fetch(`${URL}/ingredients`)
-    .then((res) => checkResponse<TIngredientsResponse>(res))
+    .then((res) => {
+      console.log('Raw API Response:', res); // Проверьте сырой ответ
+      return checkResponse<TIngredientsResponse>(res);
+    })
     .then((data) => {
+      console.log('Processed Data:', data); // Проверьте обработанные данные
       if (data?.success) return data.data;
       return Promise.reject(data);
     });
@@ -137,7 +141,7 @@ export type TRegisterData = {
   password: string;
 };
 
-type TAuthResponse = TServerResponse<{
+export type TAuthResponse = TServerResponse<{
   refreshToken: string;
   accessToken: string;
   user: TUser;
